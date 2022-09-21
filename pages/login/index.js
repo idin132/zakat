@@ -2,13 +2,11 @@ import react, { Component } from 'react';
 import Link from 'next/link'
 import axios from 'axios';
 import Cookies from 'universal-cookie';
-import * as Endpoint from '../../service/Endpoint';
+import Header from '../../component/Header2';
 
 const cookies = new Cookies();
 
-const api = Endpoint.BASE_URL;
-const backend = Endpoint.BASE_URL_WEB;
-const key = Endpoint.KEY_YAYASAN;
+
 class Login extends Component {
     constructor() {
         super()
@@ -18,19 +16,10 @@ class Login extends Component {
             fcmToken: cookies.get('fcmToken'),
             is_guest: false,
 
-            go_home: false,
-            yayasan: []
         }
     }
 
-    componentDidMount() {
-        axios.get(Endpoint.GET_YAYASAN).then(
-            res => {
-                sessionStorage.setItem("isAdmin", res.data.data.is_biaya_admin)
-                this.setState({ yayasan: res.data.data });
-            }
-        )
-    }
+
 
     handleInputChange(e) {
         const { name, value } = e.target
@@ -39,11 +28,6 @@ class Login extends Component {
         // } else {
         this.setState({ [name]: value })
         // }
-    }
-
-    guestLogin() {
-        cookies.set('is_guest', true);
-        this.setState({ is_guest: true })
     }
 
     doLogin() {
@@ -56,35 +40,7 @@ class Login extends Component {
             "username": username,
             "password": password,
             "fcmToken": cookies.get('fcmToken'),
-            "key_yayasan": Endpoint.KEY_YAYASAN
         }
-
-        axios.post(Endpoint.LOGIN, parameter, {
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        }).then(response => {
-            if (response.data.status == 400) {
-                alert(response.data.error)
-            } else if (response.data.access_token) {
-                axios.get(Endpoint.GET_USER, {
-                    headers: {
-                        'Authorization': response.data.access_token
-                    }
-                }).then(response2 => {
-                    // console.log(response2)
-                    cookies.set('username', username);
-                    cookies.set('user_id', response2.data.id);
-                    cookies.set('accessToken', response.data.access_token);
-
-                    this.setState({ go_home: true })
-                }).catch(error => {
-                    console.log(error)
-                })
-            }
-        }).catch(error => {
-            console.log(error)
-        })
     }
 
     render() {
@@ -99,6 +55,9 @@ class Login extends Component {
             window.location.href = "/"
         }
         return (
+            <>
+            <Header/>
+            
             <div className="base-login">
                 <div className="kontener">
                     <div className="login-logo" style={{ flexDirection: 'column' }}>
@@ -122,7 +81,7 @@ class Login extends Component {
                     </div>
                 </div>
             </div>
-
+            </>
         )
     };
 }

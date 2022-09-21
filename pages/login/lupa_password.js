@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import Link from 'next/link';
-import * as Endpoint from '../../service/Endpoint';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
 
-const api = Endpoint.BASE_URL;
-const backend = Endpoint.BASE_URL_WEB;
-const key = Endpoint.KEY_YAYASAN;
 class LupaPassword extends Component {
     constructor() {
         super()
@@ -18,16 +14,7 @@ class LupaPassword extends Component {
 
             go_back: false,
             go_home: false,
-            yayasan: []
         }
-    }
-
-    componentDidMount() {
-        axios.get(Endpoint.GET_YAYASAN).then(
-            res => {
-                this.setState({ yayasan: res.data.data });
-            }
-        )
     }
 
     handleInputChange(e) {
@@ -46,18 +33,6 @@ class LupaPassword extends Component {
             const parameter = {
                 "email": email
             }
-
-            axios.post(Endpoint.FORGOT_PASSWORD, parameter).
-                then(response => {
-                    if (response.data.status == 400) {
-                        alert(response.data.message)
-                    } else {
-                        alert('Email Terkirim, mohon cek email untuk reset password !')
-                        this.setState({ go_home: true })
-                    }
-                }).catch(error => {
-                    console.log(error)
-                })
         }
     }
     callbackInput = (name, value) => {
@@ -84,7 +59,7 @@ class LupaPassword extends Component {
             <div className="base-login">
                 <div className="kontener">
                     <div className="login-logo" style={{ flexDirection: 'column' }}>
-                        
+                    <img style={{ maxWidth: '25vh',maxHeight: '20vh'}} src="/logo_head_zakat.png" alt=""  />   
                     </div>
                     <div className="form-login">
                         <h3 style={{ fontWeight: 'bold' }}>Lupa Password</h3><br />

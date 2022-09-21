@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import Link from 'next/link';
-import * as Endpoint from '../../service/Endpoint';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
 
 
-const api = Endpoint.BASE_URL;
-const backend = Endpoint.BASE_URL_WEB;
-const key = Endpoint.KEY_YAYASAN;
 class Daftar extends Component {
     constructor() {
         super()
@@ -21,21 +17,7 @@ class Daftar extends Component {
             password: '',
             password_confirm: '',
             alamat: '',
-            is_guest: false,
-
-
-            go_back: false,
-            go_home: false,
-            yayasan: []
         }
-    }
-
-    componentDidMount() {
-        axios.get(Endpoint.GET_YAYASAN).then(
-            res => {
-                this.setState({ yayasan: res.data.data });
-            }
-        )
     }
 
     handleInputChange(e) {
@@ -72,22 +54,7 @@ class Daftar extends Component {
                 "no_telp": no_telp,
                 "password": password,
                 "alamat": alamat,
-                "key_yayasan": Endpoint.KEY_YAYASAN
             }
-
-            axios.post(Endpoint.REGISTER, parameter).
-                then(response => {
-                    if (response.data.status == 400) {
-                        alert(response.data.error)
-                    } else {
-                        alert('Email Terkirim, mohon cek email untuk reset password !')
-                        this.setState({ go_home: true })
-                    }
-                }).catch(error => {
-                    console.log(error)
-                })
-        } else {
-            alert('Email Tidak Valid')
         }
     }
     callbackInput = (name, value) => {
@@ -114,7 +81,7 @@ class Daftar extends Component {
             <div className="base-login">
                 <div className="kontener" style={{ height: 'auto'}}>
                     <div className="login-logo" style={{ flexDirection: 'column', height: 'auto' }}>
-                        
+                    <img style={{ maxWidth: '25vh',maxHeight: '20vh'}} src="/logo_head_zakat.png" alt=""  />
                     </div>
  
                     <div className="form-login">
